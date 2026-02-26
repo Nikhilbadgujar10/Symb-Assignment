@@ -10,8 +10,6 @@ function AddOrder({ addOrder }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Empty field validation
     if (
       !form.restaurantName ||
       !form.itemCount ||
@@ -20,14 +18,12 @@ function AddOrder({ addOrder }) {
       alert("Please fill all fields");
       return;
     }
-
-    // Negative distance validation
     if (Number(form.deliveryDistance) < 0) {
       alert("Distance cannot be negative");
       return;
     }
 
-    // Item count validation
+   
     if (Number(form.itemCount) <= 0) {
       alert("Item count must be greater than 0");
       return;
@@ -43,7 +39,7 @@ function AddOrder({ addOrder }) {
 
     addOrder(newOrder);
 
-    // Reset form
+    
     setForm({
       restaurantName: "",
       itemCount: "",
@@ -57,7 +53,6 @@ function AddOrder({ addOrder }) {
       <h2>Add Order</h2>
 
       <form onSubmit={handleSubmit}>
-        {/* Restaurant */}
         <input
           type="text"
           placeholder="Restaurant Name"
@@ -66,8 +61,6 @@ function AddOrder({ addOrder }) {
             setForm({ ...form, restaurantName: e.target.value })
           }
         />
-
-        {/* Item Count */}
         <input
           type="number"
           min="1"
@@ -77,8 +70,6 @@ function AddOrder({ addOrder }) {
             setForm({ ...form, itemCount: e.target.value })
           }
         />
-
-        {/* Distance */}
         <input
           type="number"
           min="0"
@@ -88,13 +79,9 @@ function AddOrder({ addOrder }) {
             setForm({ ...form, deliveryDistance: e.target.value })
           }
         />
-
-        {/* Payment Status Label */}
         <label style={{ fontSize: "14px", fontWeight: "500" }}>
           Payment Status
         </label>
-
-        {/* Professional Dropdown */}
         <select
           value={form.isPaid}
           onChange={(e) =>
@@ -113,5 +100,4 @@ function AddOrder({ addOrder }) {
     </div>
   );
 }
-
 export default AddOrder;

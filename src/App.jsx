@@ -2,74 +2,55 @@ import { useEffect, useState } from "react";
 import AddOrder from "./components/AddOrder";
 import FilterAssign from "./components/FilterAssign";
 import OrderList from "./components/OrderList";
-
 function App() {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [message, setMessage] = useState("");
-
-  // Load from localStorage
-  useEffect(() => {
+   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("orders")) || [];
     setOrders(saved);
   }, []);
-
-  // Save to localStorage
   useEffect(() => {
     localStorage.setItem("orders", JSON.stringify(orders));
   }, [orders]);
-
-  // Sync filtered list
   useEffect(() => {
     setFilteredOrders(orders);
   }, [orders]);
-
   const addOrder = (order) => {
     setOrders(prev => [...prev, order]);
   };
-
-  const filterOrders = (status, maxDistance) => {
+const filterOrders = (status, maxDistance) => {
     let data = [...orders];
 
     if (status !== "all") {
       const paidStatus = status === "paid";
       data = data.filter(o => o.isPaid === paidStatus);
     }
-
-    if (maxDistance) {
+if (maxDistance) {
       data = data.filter(o => o.deliveryDistance <= maxDistance);
     }
-
-    setFilteredOrders(data);
+setFilteredOrders(data);
   };
-
   const assignDelivery = (maxDistance) => {
     const eligible = orders
       .filter(o => !o.isPaid && o.deliveryDistance <= maxDistance)
       .sort((a, b) => a.deliveryDistance - b.deliveryDistance);
-
-    if (eligible.length === 0) {
+if (eligible.length === 0) {
       setMessage("No order available");
       return;
     }
-
-    const assigned = eligible[0];
-
-    setOrders(prev =>
+const assigned = eligible[0];
+ setOrders(prev =>
       prev.map(o =>
         o.orderId === assigned.orderId
           ? { ...o, isPaid: true }
           : o
       )
     );
-
-    setMessage(`Assigned Order ID: ${assigned.orderId}`);
+ setMessage(`Assigned Order ID: ${assigned.orderId}`);
   };
-
-  return (
+ return (
     <div className="container">
-
-      {/* Header with soup icon */}
       <div className="header">
         <div className="burger-icon">
   <span></span>
